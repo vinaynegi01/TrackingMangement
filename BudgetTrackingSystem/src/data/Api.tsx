@@ -32,3 +32,15 @@ export const LoginUser = (data:any) => {
 export const AddExpens = (data:any) => {
     return api.post(`/addexpense`,data)
 }
+
+export const AddBudget = (data:any) => {
+    return api.post(`/addbudget`,data)
+}
+
+export const updateBudget = (data:any)=>{
+    return api.post(`/update-budget`,data)
+}
+
+export const getallExpense = (id:any)=>{
+    return api.get(`/get-all-expense/${id}`)
+}

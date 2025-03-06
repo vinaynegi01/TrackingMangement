@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Wallet } from 'lucide-react';
-import { budgets } from '../data/mockData';
+import { AddBudget, updateBudget } from '../data/Api';
 
 export default function AddBudgetPage() {
-  const [category, setCategory] = useState('');
   const [limit, setLimit] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Add to mock data
-    budgets.push({
-      id: budgets.length + 1,
-      category,
-      limit: parseFloat(limit),
-      spent: 0
-    });
-
-    navigate('/dashboard');
+    const payload = {
+      price:limit,
+      userId:localStorage.getItem('userId')
+    }
+    try {
+      const res = await AddBudget(payload)
+      console.log(res.data.success);
+      if(res.data.success == false)
+      {
+         const res = await updateBudget(payload)
+        return navigate('/dashboard');
+      }
+      navigate('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

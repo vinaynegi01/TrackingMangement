@@ -90,6 +90,8 @@ export default function Dashboard() {
     return { ...budget, spent };
   });
 
+  console.log('Budgetttt',budgetsWithSpent);
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -167,7 +169,7 @@ export default function Dashboard() {
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-4">Monthly Spending Trend</h2>
             <div className="h-80">
@@ -204,7 +206,7 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Recent Expenses */}
         <div className="bg-white rounded-lg shadow overflow-hidden">

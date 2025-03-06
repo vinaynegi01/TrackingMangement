@@ -32,7 +32,7 @@ db.sequelize = sequelize;
 db.User.hasMany(db.expense,{foreignKey:'UserId', onDelete: 'CASCADE'});
 db.expense.belongsTo(db.User,{foreignKey:'UserId', onDelete: 'CASCADE',unique:false});
 
-db.User.hasMany(db.budget,{foreignKey:'UserId', onDelete: 'CASCADE'});
+db.User.hasOne(db.budget,{foreignKey:'UserId', onDelete: 'CASCADE'});
 db.budget.belongsTo(db.User,{foreignKey:'UserId', onDelete: 'CASCADE',unique:false});
 
 

@@ -335,7 +335,16 @@ const AddExpense = async(req,res,next) => {
 
 const AddBudget = async(req,res,next) => {
     try {
-        const {price} = req.body
+        const {price,userId} = req.body
+        const checkBudget = await db.budget.findOne({
+            where:{
+                UserId:userId
+            }
+        })
+        if(checkBudget)
+        {
+            return Response.SetSuccessErrorResponse('Buget Already added please update',res,CommonServices.STATUS_CODE.OK)
+        }
         const budgetadd = await db.budget.create(req.body)
         if(!budgetadd)
             {
@@ -343,6 +352,69 @@ const AddBudget = async(req,res,next) => {
             }
             return Response.SetSuccessResponse(budgetadd,res,CommonServices.STATUS_CODE.OK)
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+const GetAllExpense = async(req,res,next)=>{
+    try {
+        const {userId} = req.params
+        const getdata = await db.User.findOne({
+            include: [
+                {
+                    model: db.expense, // Assuming a user has multiple expenses
+                },
+                {
+                    model: db.budget, // Assuming a user has only one budget
+                    
+                }
+            ],
+            where:{
+                id:userId
+            }
+        })
+        if(!getdata)
+        {
+            return Response.SetSuccessErrorResponse('unable to get data',res,CommonServices.STATUS_CODE.BAD_REQUEST)
+        }
+        return Response.SetSuccessResponse(getdata,res,CommonServices.STATUS_CODE.OK)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const expenseUser = async(req,res,next)=>{
+    try {
+        const {userId} = req.params
+        const getexpense = await db.expense.findAll({
+            where:{
+                UserId:userId
+            }
+        })
+        if(!getexpense)
+            {
+                return Response.SetSuccessErrorResponse('unable to get data',res,CommonServices.STATUS_CODE.BAD_REQUEST)
+            }
+            return Response.SetSuccessResponse(getexpense,res,CommonServices.STATUS_CODE.OK)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const updateBudget = async(req,res,next)=>{
+    try {
+        const {price,userId} = req.body
+        const updatedata = await db.budget.update({price:price},{
+            where:{
+                UserId:userId
+            }
+        })
+        if(!updatedata)
+        {
+            return Response.SetSuccessErrorResponse('unable to update',res,CommonServices.STATUS_CODE.BAD_REQUEST)
+        }
+        return Response.SetSuccessResponse('Updated the budget',res,CommonServices.STATUS_CODE.OK)
     } catch (error) {
         next(error)
     }
@@ -359,5 +431,8 @@ module.exports = {
     generateReport,
     Report,
     AddExpense,
-    AddBudget
+    AddBudget,
+    GetAllExpense,
+    updateBudget,
+    expenseUser
 }

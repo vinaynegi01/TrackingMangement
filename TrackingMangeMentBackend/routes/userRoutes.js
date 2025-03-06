@@ -19,6 +19,20 @@ router.post('/addexpense',
 RequestMethodsMiddlewares.ApplicationJsonData,
 controller.AddExpense)
 
+router.post('/addbudget',
+RequestMethodsMiddlewares.ApplicationJsonData,
+controller.AddBudget
+)
+
+router.get('/get-all-expense/:userId',
+controller.GetAllExpense
+)
+
+router.get('/all-expense-user/:userId',
+controller.GetAllUser)
+
+router.post('/update-budget',
+controller.updateBudget)
 
 router.post('/LoggingUser',
 controller.LoggedInUser);
