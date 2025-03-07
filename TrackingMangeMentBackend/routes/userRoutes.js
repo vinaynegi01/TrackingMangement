@@ -24,12 +24,28 @@ RequestMethodsMiddlewares.ApplicationJsonData,
 controller.AddBudget
 )
 
+
+
 router.get('/get-all-expense/:userId',
 controller.GetAllExpense
 )
 
 router.get('/all-expense-user/:userId',
-controller.GetAllUser)
+controller.expenseUser)
+
+router.get('/financel-dashboard/:userId',
+ controller.getfinancelBudget)
+
+router.get('/get-particular-budget/:id',
+    controller.getParticularexpense)
+
+router.post('/update-expense/:id',
+    controller.UpdateParticularexpense
+)
+
+router.delete(`/delete-expense/:id`,
+    controller.DeleteParticularExpense
+)
 
 router.post('/update-budget',
 controller.updateBudget)

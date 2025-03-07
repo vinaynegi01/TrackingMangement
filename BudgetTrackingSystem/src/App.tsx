@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import AddExpensePage from './components/AddExpensePage';
 import AddBudgetPage from './components/AddBudgetPage';
 import RegisterPage from './components/RegisterPage';
+import EditExpenses from './components/EditExpenses';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/add-budget" element={<AddBudgetPage />} />
         <Route path="/register" element={< RegisterPage/>} />
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/edit-expense/:id" element={< EditExpenses/>} />
       </Routes>
     </Router>
   );

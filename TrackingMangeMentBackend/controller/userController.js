@@ -420,6 +420,82 @@ const updateBudget = async(req,res,next)=>{
     }
 }
 
+const getfinancelBudget = async(req,res,next)=>{
+    const {userId} = req.params
+    const getAlldata = await db.User.findOne({
+        include: [
+            { model: db.expense },
+            { model: db.budget }
+        ],
+        where: { id: userId }
+    });
+    
+    // Ensure data exists
+    if (!getAlldata) {
+        return res.status(404).json({ success: false, message: "User not found" });
+    }
+    
+    // Calculate total expenses
+    const totalExpense = getAlldata.expenses.reduce((sum, expense) => sum + expense.price, 0);
+    
+    // Get budget value
+    const budget = getAlldata.budget ? getAlldata.budget.price : 0;
+    
+    // Calculate remaining balance
+    const remainingBalance = budget - totalExpense;
+    
+    // Response
+    const response = {
+        totalExpense,
+        Budget: budget,
+        RemainingBalance: remainingBalance
+    };
+
+    Response.SetSuccessResponse(response,res,CommonServices.STATUS_CODE.OK)
+}
+
+const getParticularexpense = async(req,res,next)=>{
+    try {
+        const {id} = req.params
+        const getExpenseData = await db.expense.findOne({
+            where:{
+                id:id
+            }
+        })
+        Response.SetSuccessResponse(getExpenseData,res,CommonServices.STATUS_CODE.OK)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const UpdateParticularexpense = async(req,res,next)=>{
+    try {
+        const {id} = req.params
+        const {price,description,category} = req.body
+        const updateExpense = await db.expense.update({price:price,description:description,category:category},{
+            where:{
+                id:id
+            }
+        })
+        Response.SetSuccessResponse('Record updated successfully',res,CommonServices.STATUS_CODE.OK)
+    } catch (error) {
+        next(error)
+    }
+}
+const DeleteParticularExpense = async(req,res,next)=>{
+    try {
+        const {id}= req.params
+        const deleterecord = await db.expense.destroy({
+            where:{
+                id:id
+            }
+        })
+        return Response.SetSuccessResponse('Record Deleted sucessfully',res,CommonServices.STATUS_CODE.OK)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     loadRegister,
     SignUpUser,
@@ -434,5 +510,9 @@ module.exports = {
     AddBudget,
     GetAllExpense,
     updateBudget,
-    expenseUser
+    expenseUser,
+    getfinancelBudget,
+    getParticularexpense,
+    UpdateParticularexpense,
+    DeleteParticularExpense
 }
